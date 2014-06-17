@@ -35,7 +35,7 @@ from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
 # import warnings
 from .const import WARN_HTTP_ROBOTS_DENIED, \
     WARN_HTTP_MOVED_PERMANENT, \
-    WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_COOKIE_STORE_ERROR, \
+    WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_MULTIPLE_CHOICES, WARN_HTTP_COOKIE_STORE_ERROR, \
     WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING, \
     WARN_HTTP_AUTH_UNKNOWN, WARN_HTTP_AUTH_UNAUTHORIZED
 
@@ -476,6 +476,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                 # no content
                 self.add_warning(self.response.reason,
                                  tag=WARN_HTTP_EMPTY_CONTENT)
+            if self.response.status == 300:
+                # multiple choices
+                self.add_warning(self.response.reason,
+                                 tag=WARN_HTTP_MULTIPLE_CHOICES)
             # store cookies for valid links
             self.store_cookies()
             if self.response.status >= 200:
