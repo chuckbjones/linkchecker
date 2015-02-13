@@ -305,7 +305,7 @@ class HttpCookie (object):
             parts.append("$Version=%s" % quote(self.attributes["version"]))
         parts.append("%s=%s" % (self.name, self.value))
         parts.extend(["$%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
-                  for k, v in self.attributes.items() if k != "version"])
+                  for k, v in self.attributes.items() if (k == "path" or k == "domain" or k == "port")])
         return "; ".join(parts)
 
 class NetscapeCookie (HttpCookie):
